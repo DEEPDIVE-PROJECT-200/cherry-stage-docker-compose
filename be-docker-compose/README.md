@@ -11,7 +11,10 @@ git clone [backend-dev-env-repo]
 cd cherry-backend-dev
 ```
 
-### 2. 백엔드 서버 실행
+### 2. 환경변수 설정
+`env` 파일의 값들을 Discord에서 공유드린 실제 값으로 교체해주세요.
+
+### 3. 백엔드 서버 실행
 ```bash
 # 모든 서비스 실행 (백엔드 + DB + Redis)
 docker-compose up -d
@@ -20,10 +23,21 @@ docker-compose up -d
 docker-compose logs -f cherry-backend
 ```
 
-### 3. 실행 확인
+### 4. 실행 확인
 - **API 서버**: http://localhost:8080
 - **Health Check**: http://localhost:8080/actuator/health
 - **Swagger UI**: http://localhost:8080/swagger-ui/index.html
+
+### 데이터 보존 안내
+데이터는 자동으로 보존됩니다.
+
+- 컴퓨터를 껐다 켜도 MySQL, Redis 데이터 유지
+- `docker-compose stop`, `docker-compose down` 해도 데이터 유지
+
+데이터를 완전히 삭제하고 싶을 때:
+``` bash
+docker-compose down -v  # 볼륨까지 삭제
+```
 
 ## 🔄 업데이트 방법
 
