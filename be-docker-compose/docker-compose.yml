@@ -5,6 +5,7 @@ services:
   cherry-backend:
     image: ogu1208/cherry-be-dev:latest
     container_name: cherry-backend
+    platform: linux/amd64
     pull_policy: always
     ports:
       - "8080:8080"
