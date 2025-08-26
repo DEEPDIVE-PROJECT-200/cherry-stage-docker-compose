@@ -18,6 +18,7 @@ cd cherry-backend-dev
 ```bash
 # 모든 서비스 백그라운드 실행 (백엔드 + DB + Redis)
 docker-compose up -d
+docker-compose up # 터미널에서 로그까지 바로 보는 포어그라운드 실행
 
 # 로그 확인
 docker-compose logs -f cherry-backend
