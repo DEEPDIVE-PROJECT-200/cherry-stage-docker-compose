@@ -16,7 +16,7 @@ cd cherry-backend-dev
 
 ### 3. 백엔드 서버 실행
 ```bash
-# 모든 서비스 실행 (백엔드 + DB + Redis)
+# 모든 서비스 백그라운드 실행 (백엔드 + DB + Redis)
 docker-compose up -d
 
 # 로그 확인
@@ -28,8 +28,8 @@ docker-compose logs -f cherry-backend
 - **Health Check**: http://localhost:8080/actuator/health
 - **Swagger UI**: http://localhost:8080/swagger-ui/index.html
 
-### 데이터 보존 안내
-데이터는 자동으로 보존됩니다.
+### 5. 데이터 보존 안내
+DB 데이터는 자동으로 보존됩니다.
 
 - 컴퓨터를 껐다 켜도 MySQL, Redis 데이터 유지
 - `docker-compose stop`, `docker-compose down` 해도 데이터 유지
@@ -84,17 +84,42 @@ docker-compose down -v
 curl http://localhost:8080/actuator/health
 ```
 
-## 🐛 문제 해결
+## 💬 문제 해결
 
 ### 포트 충돌
 이미 사용 중인 포트가 있다면:
+
+**macOS/Linux**
 ```bash
-# 실행 중인 프로세스 확인
+# 1. 실행 중인 프로세스 확인
 lsof -i :8080
 lsof -i :3306
+lsof -i :6379
 
-# Docker 컨테이너 중지
-docker-compose down
+# 2. 충돌하는 프로세스 종료 (PID 확인 후)
+kill -9 [PID번호]
+
+# 예시: PID가 1234인 경우
+kill -9 1234
+```
+
+**Window**
+```bash
+# 1. 실행 중인 프로세스 확인
+netstat -ano | findstr :8080
+netstat -ano | findstr :3306
+netstat -ano | findstr :6379
+
+# 2. 충돌하는 프로세스 종료 (PID 확인 후)
+taskkill /PID [PID번호] /F
+
+# 예시: PID가 1234인 경우
+taskkill /PID 1234 /F
+```
+
+**프로세스 다시 실행**
+```bash
+docker-compose up -d
 ```
 
 ### 백엔드 서버가 시작되지 않을 때
