@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 echo "🔄 Cherry 백엔드 업데이트를 시작합니다..."
 
@@ -32,7 +32,7 @@ check_backend_status() {
     echo -e "${BLUE}⏳ 백엔드 서비스 시작을 기다리는 중...${NC}"
     
     while [ $attempt -le $max_attempts ]; do
-        if curl -f -s http://localhost:8080/actuator/health > /dev/null 2>&1; then
+        if curl -f -s http://localhost:8080/api/v1/health > /dev/null 2>&1; then
             echo -e "${GREEN}✅ 백엔드 서비스가 정상적으로 시작되었습니다!${NC}"
             return 0
         fi
@@ -56,7 +56,11 @@ main() {
     
     # 백엔드 서비스만 재시작
     echo -e "${BLUE}🔄 백엔드 서비스를 재시작하는 중...${NC}"
-    docker-compose up -d cherry-backend || error_exit "백엔드 서비스 시작 실패"
+    docker compose pull cherry-backend || error_exit "이미지 다운로드 실패"
+    docker compose stop cherry-backend || true
+    docker compose rm -f cherry-backend || true
+    sleep 2 # 잠시 대기 
+    docker compose up -d --no-deps cherry-backend || error_exit "백엔드 서비스 시작 실패"
     
     # 서비스 상태 확인
     check_backend_status
@@ -66,8 +70,8 @@ main() {
     echo ""
     echo "📋 접속 정보:"
     echo "   • API 서버: http://localhost:8080"
-    echo "   • Health Check: http://localhost:8080/actuator/health"
-    echo "   • Swagger UI: http://localhost:8080/swagger-ui/index.html"
+    echo "   • Health Check: http://localhost:8080/api/v1/health"
+    echo "   • Swagger UI: http://localhost:8080/api/v1/swagger-ui/index.html"
     echo ""
     echo "📊 로그 확인: docker-compose logs -f cherry-backend"
 }

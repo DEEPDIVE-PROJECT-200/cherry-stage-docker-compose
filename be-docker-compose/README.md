@@ -46,6 +46,7 @@ docker-compose down -v  # 볼륨까지 삭제
 
 ```bash
 # 자동 업데이트 스크립트 실행
+chmod +x update-backend.sh # 이 스크립트를 직접 실행 가능하도록 권한 추가 (처음 한번만)
 ./update-backend.sh
 
 # 또는 수동 업데이트
